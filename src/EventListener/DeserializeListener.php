@@ -73,13 +73,14 @@ class DeserializeListener
     {
         $atts = RequestAttributesExtractor::extractAttributes($request);
         //dd($atts);
+
+        $context = $this->serializerContextBuilder->createFromRequest($request, false, $atts);
+        
         $populated = $request->attributes->get("data");
 
         if (! is_null($populated)) {
             $context[AbstractNormalizer::OBJECT_TO_POPULATE] = $populated;
         }
-
-        $context = $this->serializerContextBuilder->createFromRequest($request, false, $atts);
 
         $dataReq = $request->request->all();
         $dataFiles = $request->files->all();
