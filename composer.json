@@ -1,12 +1,7 @@
 {
     "name": "mink67/multipart_deserialize",
-    "type": "library",
     "license": "MIT",
-    "autoload": {
-        "psr-4": {
-            "Mink67\\MultipartDeserialize\\": "src/"
-        }
-    },
+    
     "authors": [
         {
             "name": "Michée NKUSU",
@@ -22,5 +17,10 @@
         "symfony/serializer": "^5.4",
         "symfony/string": "^5.4",
         "symfony/http-kernel": "^5.4"
+    },
+    "autoload": {
+        "psr-4": {
+            "Mink67\\MultiPartDeserialize\\": "src/"
+        }
     }
 }
