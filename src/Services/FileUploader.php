@@ -14,6 +14,7 @@ class FileUploader
     private $slugger;
     private $urlHelper;
     private $relativeUploadsDir;
+    private $hostName;
  
     public function __construct(ContainerBagInterface $containerBag, SluggerInterface $slugger, UrlHelper $urlHelper)
     {
@@ -27,6 +28,8 @@ class FileUploader
             $containerBag->get("mink67.multipart_deserializer.public_path"), 
             '', 
             $this->uploadPath).'/';
+
+        $this->hostName = $containerBag->get("mink67.multipart_deserializer.host_name");
     }
  
     public function upload(UploadedFile $file)
@@ -51,14 +54,27 @@ class FileUploader
         return $this->uploadPath;
     }
  
-    public function getUrl(?string $fileName, bool $absolute = true)
+    public function getUrl(?string $fileName)
     {
         if (empty($fileName)) return null;
+
+        //$relativePath = $this->urlHelper->getRelativePath($this->relativeUploadsDir.$fileName) ;
+        $hostName = $this->hostName;
+
+        //dd($hostName);
  
-        if ($absolute) {
+        if (is_null($hostName)) {
             return $this->urlHelper->getAbsoluteUrl($this->relativeUploadsDir.$fileName);
         }
+
+        $coutHostName = strlen($hostName);
+        $lastChar = substr($hostName, $coutHostName-1, 1);
+
+        if ($lastChar == "/") {
+
+            $hostName = substr($hostName,0, $coutHostName-1);
+        }
  
-        return $this->urlHelper->getRelativePath($this->relativeUploadsDir.$fileName);
+        return $hostName . $this->relativeUploadsDir.$fileName;
     }
 }

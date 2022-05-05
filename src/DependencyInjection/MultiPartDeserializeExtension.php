@@ -2,8 +2,11 @@
 
 namespace Mink67\MultiPartDeserialize\DependencyInjection;
 
+use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\Extension;
+use function Symfony\Component\String\u;
+use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 
 /**
  * 
@@ -25,9 +28,10 @@ class MultiPartDeserializeExtension extends Extension {
         $config = $this->processConfiguration($configuration, $configs);
 
         //dd($config);
-
+        $hostName = isset($config["host_name"]) ? $config["host_name"] : null ;
         $container->setParameter("mink67.multipart_deserializer.public_path", $config["public_path"]);
         $container->setParameter("mink67.multipart_deserializer.upload_path", $config["upload_path"]);
+        $container->setParameter("mink67.multipart_deserializer.host_name", $hostName);
         
 
     }
