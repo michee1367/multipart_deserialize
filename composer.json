@@ -1,0 +1,26 @@
+{
+    "name": "mink67/multipart_deserialize",
+    "type": "library",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Mink67\\MultipartDeserialize\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Michée NKUSU",
+            "email": "nkusumichee1367@gmail.com"
+        }
+    ],
+    "require": {
+        "symfony/framework-bundle": "^5.4.5",
+        "symfony/config": "^5.4",
+        "symfony/dependency-injection": "^5.4",
+        "api-platform/core": "^2.6",
+        "symfony/http-foundation": "^5.4",
+        "symfony/serializer": "^5.4",
+        "symfony/string": "^5.4",
+        "symfony/http-kernel": "^5.4"
+    }
+}

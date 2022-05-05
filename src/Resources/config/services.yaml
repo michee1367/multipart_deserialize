@@ -1,0 +1,17 @@
+services:
+  Mink67\MultiPartDeserialize\Controller\EmtityCpntroller:
+    tags: [controller.service_arguments]
+    class: Mink67\MultiPartDeserialize\Controller\EmtityCpntroller
+    autowire: true
+
+  Mink67\MultiPartDeserialize\EventListener\DeserializeListener:
+    tags: 
+      - {name: 'kernel.event_listener', event: 'kernel.request', method: 'onKernelRequest', priority: 2}
+    autoconfigure: false
+    decorates: 'api_platform.listener.request.deserialize'
+    autowire: true
+
+  Mink67\MultiPartDeserialize\Services\FileUploader:
+    class: Mink67\MultiPartDeserialize\Services\FileUploader
+    autowire: true
+  
