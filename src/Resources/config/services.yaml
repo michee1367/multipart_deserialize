@@ -14,4 +14,21 @@ services:
   Mink67\MultiPartDeserialize\Services\FileUploader:
     class: Mink67\MultiPartDeserialize\Services\FileUploader
     autowire: true
+
+  Mink67\MultiPartDeserialize\Annotations\Readers\ReaderFile:
+    class: Mink67\MultiPartDeserialize\Annotations\Readers\ReaderFile
+    autowire: true      # Automatically injects dependencies in your services.
+
+  
+  'Mink67\MultiPartDeserialize\Serializer\MultiPartNormalizer':
+        class: 'Mink67\MultiPartDeserialize\Serializer\MultiPartNormalizer'
+        # By default .inner is passed as argument
+        decorates: 'api_platform.jsonld.normalizer.item'
+        autowire: true      # Automatically injects dependencies in your services.
+        
+  'app.serializer.normalizer.item.json':
+        class: 'Mink67\MultiPartDeserialize\Serializer\MultiPartNormalizer'
+        decorates: 'api_platform.serializer.normalizer.item'
+        autowire: true      # Automatically injects dependencies in your services.
+
   
