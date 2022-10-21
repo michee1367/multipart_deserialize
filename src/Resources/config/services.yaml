@@ -11,6 +11,11 @@ services:
     decorates: 'api_platform.listener.request.deserialize'
     autowire: true
 
+  Mink67\MultiPartDeserialize\Services\MultiPartNormalizer:
+    class: Mink67\MultiPartDeserialize\Services\MultiPartNormalizer
+    autowire: true
+
+  
   Mink67\MultiPartDeserialize\Services\FileUploader:
     class: Mink67\MultiPartDeserialize\Services\FileUploader
     autowire: true
