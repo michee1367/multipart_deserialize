@@ -6,6 +6,7 @@ use Mink67\MultiPartDeserialize\Annotations\File;
 use Mink67\MultiPartDeserialize\Commons\Normalizer\Context;
 use Mink67\MultiPartDeserialize\Contracts\NormaliserFile;
 use Mink67\MultiPartDeserialize\Services\FileUploader;
+use League\Uri\Uri;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class DefaultNormalizerFile implements NormaliserFile
