@@ -14,6 +14,7 @@ use Symfony\Component\PropertyAccess\PropertyAccess;
 use Mink67\MultiPartDeserialize\Annotations\Readers\ReaderFile;
 use Mink67\MultiPartDeserialize\Services\FileUploader;
 use Doctrine\Common\Util\ClassUtils;
+use Mink67\MultiPartDeserialize\Services\MultiPartNormalizer as ServicesMultiPartNormalizer;
 
 final class MultiPartNormalizer implements NormalizerInterface, DenormalizerInterface, SerializerAwareInterface
 {
@@ -30,8 +31,17 @@ final class MultiPartNormalizer implements NormalizerInterface, DenormalizerInte
      * @var FileUploader
      */
     private $fileUploader;
+    /**
+     * @var ServicesMultiPartNormalizer
+     */
+    private $serviceNormalizer;
 
-    public function __construct(NormalizerInterface $decorated, ReaderFile $readerFile, FileUploader $fileUploader)
+    public function __construct(
+        NormalizerInterface $decorated, 
+        ReaderFile $readerFile, 
+        FileUploader $fileUploader,
+        ServicesMultiPartNormalizer $serviceNormalizer
+    )
     {
         if (!$decorated instanceof DenormalizerInterface) {
             throw new \InvalidArgumentException(sprintf('The decorated normalizer must implement the %s.', DenormalizerInterface::class));
@@ -40,6 +50,7 @@ final class MultiPartNormalizer implements NormalizerInterface, DenormalizerInte
         $this->decorated = $decorated;
         $this->readerFile = $readerFile;
         $this->fileUploader = $fileUploader;
+        $this->serviceNormalizer = $serviceNormalizer;
     }
 
     public function supportsNormalization($data, $format = null)
@@ -51,25 +62,7 @@ final class MultiPartNormalizer implements NormalizerInterface, DenormalizerInte
     {
         //dd($object);
         $data = $this->decorated->normalize($object, $format, $context);
-        
-        $accessor = PropertyAccess::createPropertyAccessor();
-
-
-        $files = $this->readerFile->getFiles(ClassUtils::getClass($object));
-
-        foreach ($files as $key => $file) {
-            if (isset( $data[$file->getPropertyName()])) {
-                $value = $accessor->getValue($object, $file->getPropertyName());
-
-                if (empty($value)) {
-                    $data[$file->getPropertyName()] = null;
-                }else {
-                    $normalValue = $this->fileUploader->getUrl($value);
-                    $data[$file->getPropertyName()] = $normalValue;
-                }
-                
-            }
-        }
+        $data = $this->serviceNormalizer->normalize($object, $data);
 
         return $data;
     }

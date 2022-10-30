@@ -7,12 +7,21 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\Extension;
 use function Symfony\Component\String\u;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
+use Mink67\MultiPartDeserialize\Services\NormaliserFile\LiipImagineNormalizerFile;
 
 /**
  * 
  */
 class MultiPartDeserializeExtension extends Extension {
 
+    /**
+     * 
+     */
+    public function __construct() 
+    {
+        
+        //$this->name = "mink67.security.bundle";
+    }
 
     /**
      * Loads a specific configuration.

@@ -13,6 +13,8 @@
         "symfony/config": "^5.4",
         "symfony/dependency-injection": "^5.4",
         "api-platform/core": "^2.6",
+        "liip/imagine-bundle": "^2.9",
+        "league/uri": "^6.0",
         "symfony/http-foundation": "^5.4",
         "symfony/serializer": "^5.4",
         "symfony/string": "^5.4",

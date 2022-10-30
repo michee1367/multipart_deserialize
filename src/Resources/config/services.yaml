@@ -4,6 +4,9 @@ services:
     class: Mink67\MultiPartDeserialize\Controller\EmtityCpntroller
     autowire: true
 
+  Symfony\Component\DependencyInjection\ContainerInterface:
+      alias: 'service_container'
+
   Mink67\MultiPartDeserialize\EventListener\DeserializeListener:
     tags: 
       - {name: 'kernel.event_listener', event: 'kernel.request', method: 'onKernelRequest', priority: 2}
@@ -36,4 +39,11 @@ services:
         decorates: 'api_platform.serializer.normalizer.item'
         autowire: true      # Automatically injects dependencies in your services.
 
-  
+  'Mink67\MultiPartDeserialize\Services\NormaliserFile\DefaultNormalizerFile':
+        class: 'Mink67\MultiPartDeserialize\Services\NormaliserFile\DefaultNormalizerFile'
+        autowire: true      # Automatically injects dependencies in your services.
+
+  'Mink67\MultiPartDeserialize\Services\NormaliserFile\LiipImagineNormalizerFile':
+        class: 'Mink67\MultiPartDeserialize\Services\NormaliserFile\LiipImagineNormalizerFile'
+        autowire: true      # Automatically injects dependencies in your services.
+        public: true

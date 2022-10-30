@@ -75,11 +75,12 @@ class ReaderFile {
 
                 foreach ($atts as $key => $att) {
                     //dump($property->getName());
+                    //dd($att->getArguments());
                     if ($att->getName() == File::class) {
+                        $options = $att->getArguments();
+                        $options["propertyName"] = $property->getName();
                         $ann = new File(
-                            [
-                                "propertyName" => $property->getName()
-                            ]
+                            $options
                         );
                         array_push($filesAnn, $ann);
                     }

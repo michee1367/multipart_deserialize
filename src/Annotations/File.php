@@ -13,13 +13,34 @@ class File {
      * @var string
      */
     protected $propertyName;
+    /**
+     * @var string
+     */
+    protected $normalizerClassName;
+    /**
+     * @var array
+     */
+    protected $normalizerParams;
     
 
     public function __construct(array $options = [])
     {
+        //dd($options);
 
         if (!empty($options['propertyName'])) {
             $this->propertyName = $options['propertyName'];
+        }
+
+        if (!empty($options['normalizerClassName'])) {
+            $this->normalizerClassName = $options['normalizerClassName'];            
+        }
+
+        $this->normalizerParams = [];
+        
+        if (isset($options['normalizerParams']) && !empty($options['normalizerParams']) && is_array($options['normalizerParams'])) {
+
+            $this->normalizerParams = $options['normalizerParams'];
+
         }
         
     }
@@ -32,6 +53,24 @@ class File {
     public function getPropertyName()
     {
         return $this->propertyName;
+    }
+    /**
+     * Get the value of propertyName
+     *
+     * @return  string
+     */ 
+    public function getNormaliserClassName()
+    {
+        return $this->normalizerClassName;
+    }
+    /**
+     * Get the value of propertyName
+     *
+     * @return  array
+     */ 
+    public function getNormalizerParams()
+    {
+        return $this->normalizerParams;
     }
 
     /**
