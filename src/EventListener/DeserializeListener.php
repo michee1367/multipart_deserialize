@@ -71,34 +71,41 @@ class DeserializeListener
 
     public function denormalizeFormMultipart(Request $request)
     {
-        $atts = RequestAttributesExtractor::extractAttributes($request);
-        //dd($atts);
 
-        $context = $this->serializerContextBuilder->createFromRequest($request, false, $atts);
-        
-        $populated = $request->attributes->get("data");
+        try {
 
-        if (! is_null($populated)) {
-            $context[AbstractNormalizer::OBJECT_TO_POPULATE] = $populated;
+            $atts = RequestAttributesExtractor::extractAttributes($request);
+            //dd($atts);
+
+            $context = $this->serializerContextBuilder->createFromRequest($request, false, $atts);
+            
+            $populated = $request->attributes->get("data");
+
+            if (! is_null($populated)) {
+                $context[AbstractNormalizer::OBJECT_TO_POPULATE] = $populated;
+            }
+
+            $dataReq = $request->request->all();
+            $dataFiles = $request->files->all();
+            $fileUploader = $this->fileUploader;
+
+            foreach ($dataFiles as $key => $value) {
+                $dataFiles[$key] = $fileUploader->upload($value);
+            }
+
+            $object = $this->denormalizer->denormalize(
+                array_merge($dataFiles, $dataReq),
+                $atts["resource_class"],
+                null,
+                $context
+            );
+
+            //dd($object);
+            $populated = $request->attributes->set("data", $object);
+
+            
+        } catch (\Throwable $th) {
+            
         }
-
-        $dataReq = $request->request->all();
-        $dataFiles = $request->files->all();
-        $fileUploader = $this->fileUploader;
-
-        foreach ($dataFiles as $key => $value) {
-            $dataFiles[$key] = $fileUploader->upload($value);
-        }
-
-        $object = $this->denormalizer->denormalize(
-            array_merge($dataFiles, $dataReq),
-            $atts["resource_class"],
-            null,
-            $context
-        );
-
-        //dd($object);
-        $populated = $request->attributes->set("data", $object);
-
     }
 }
