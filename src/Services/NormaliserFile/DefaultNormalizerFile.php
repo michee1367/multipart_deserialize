@@ -37,7 +37,7 @@ class DefaultNormalizerFile implements NormaliserFile
      */
     public function normalize(array $data, File $file, Context $context)
     {
-        $res = $data[$file->getPropertyName()];
+        $res = isset($data[$file->getPropertyName()]) && !!$data[$file->getPropertyName()]? [$data[$file->getPropertyName()]]:[];
 
         if (isset($data[$file->getPropertyName()])) {
             $value = $data[$file->getPropertyName()];
@@ -70,6 +70,6 @@ class DefaultNormalizerFile implements NormaliserFile
             return $url;
         }
 
-        return $host."/".$uri->getPath();
+        return rtrim($host, "/") ."/". ltrim($uri->getPath(), "/") ;
     }
 }

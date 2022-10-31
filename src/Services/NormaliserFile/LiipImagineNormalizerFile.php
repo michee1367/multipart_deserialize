@@ -44,7 +44,7 @@ class LiipImagineNormalizerFile implements NormaliserFile
      */
     public function normalize(array $data, File $file, Context $context)
     {
-        $res = !!$data[$file->getPropertyName()]? [$data[$file->getPropertyName()]]:[];
+        $res = isset($data[$file->getPropertyName()]) && !!$data[$file->getPropertyName()]? [$data[$file->getPropertyName()]]:[];
         $filters = $this->getNormalFilters($context->getParam("filter"));
 
 
@@ -99,6 +99,6 @@ class LiipImagineNormalizerFile implements NormaliserFile
             return $url;
         }
 
-        return $host."/".$uri->getPath();
+        return rtrim($host, "/") ."/". ltrim($uri->getPath(), "/") ;
     }
 }
