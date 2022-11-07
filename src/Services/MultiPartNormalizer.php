@@ -99,6 +99,43 @@ final class MultiPartNormalizer
 
         return $normalizer;
     }
+
+    /**
+     * @return File[]
+     */
+    public function getFilesToObject($object)
+    {
+        $files = $this->readerFile->getFiles(ClassUtils::getClass($object));
+
+        return $files;
+    }
+
+    /**
+     * @return array
+     */
+    public function getDataFiles($object)
+    {
+        $files = $this->getFilesToObject($object);
+        $data = [];
+        $accessor = PropertyAccess::createPropertyAccessor();
+
+        foreach ($files as $key => $file) {
+            $data[$file->getPropertyName()] = $accessor->getValue($object, $file->getPropertyName()); 
+        }
+
+        return $data;
+    }
+
+    /**
+     * 
+     */
+    public function getDataFilesNormalize($object)
+    {
+        $dataFiles = $this->getDataFiles($object);
+        $dataFilesNormalize = $this->normalize($object, $dataFiles);
+        return $dataFilesNormalize;
+    }
+
     /**
      * 
      */
@@ -120,6 +157,8 @@ final class MultiPartNormalizer
 
         return new Context($data, $params);
     }
+
+    
 
     public function getPropertyFile($object, $dataOrg)
     {
@@ -155,4 +194,6 @@ final class MultiPartNormalizer
 
         return $data;
     }
+
+
 }
