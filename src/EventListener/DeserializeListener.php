@@ -11,6 +11,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class DeserializeListener  
 {
@@ -47,7 +49,7 @@ class DeserializeListener
     public function onKernelRequest(RequestEvent $event)
     {
         $request = $event->getRequest();
-
+        
         if (
             $request->isMethodCacheable() ||
             $request->isMethod(Request::METHOD_DELETE)
@@ -100,12 +102,10 @@ class DeserializeListener
                 $context
             );
 
-            //dd($object);
             $populated = $request->attributes->set("data", $object);
-
-            
-        } catch (\Throwable $th) {
-            
+        } 
+        catch(FileException $fE) {
+            throw new HttpException(500, "Upload file Error unable to write in directory", $fE);
         }
     }
 }
