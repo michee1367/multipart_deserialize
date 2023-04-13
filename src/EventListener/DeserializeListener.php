@@ -3,7 +3,7 @@
 namespace Mink67\MultiPartDeserialize\EventListener;
 
 use ApiPlatform\Core\EventListener\DeserializeListener as DecoratedListerner;
-use ApiPlatform\Core\Serializer\SerializerContextBuilderInterface;
+use ApiPlatform\Serializer\SerializerContextBuilderInterface;
 use ApiPlatform\Core\Util\RequestAttributesExtractor;
 use Mink67\MultiPartDeserialize\Services\FileUploader;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
