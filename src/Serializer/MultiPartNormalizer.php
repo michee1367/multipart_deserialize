@@ -61,8 +61,12 @@ final class MultiPartNormalizer implements NormalizerInterface, DenormalizerInte
     public function normalize($object, $format = null, array $context = [])
     {
         //dd($object);
+
         $data = $this->decorated->normalize($object, $format, $context);
-        $data = $this->serviceNormalizer->normalize($object, $data);
+
+        if (is_array($data)) {
+            $data = $this->serviceNormalizer->normalize($object, $data);            
+        }
 
         return $data;
     }
