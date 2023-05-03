@@ -9,6 +9,7 @@ use Mink67\MultiPartDeserialize\Services\FileUploader;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
@@ -47,6 +48,8 @@ class DeserializeListener
     public function onKernelRequest(RequestEvent $event)
     {
         $request = $event->getRequest();
+        $dataReq = $request->request->all();
+
 
         if (
             $request->isMethodCacheable() ||
@@ -57,24 +60,28 @@ class DeserializeListener
 
         //form 
         $contentType = $request->getContentType();
+        //throw new HttpException(422, $contentType);
+
 
         if (
             $contentType == "multipart" ||
             $contentType == "form" 
         ) {
-            $this->denormalizeFormMultipart($request);
+            $this->denormalizeFormMultipart($event);
             
         }else {
             $this->decorated->onKernelRequest($event);
         }
     }
 
-    public function denormalizeFormMultipart(Request $request)
+    public function denormalizeFormMultipart(RequestEvent $event)
     {
+        $request = $event->getRequest();
 
         try {
 
             $atts = RequestAttributesExtractor::extractAttributes($request);
+            //throw new HttpException(422, json_encode($request->files->all()));
             //dd($atts);
 
             $context = $this->serializerContextBuilder->createFromRequest($request, false, $atts);
@@ -105,7 +112,9 @@ class DeserializeListener
 
             
         } catch (\Throwable $th) {
-            
+            //dd($th);
+            $this->decorated->onKernelRequest($event);
+            //throw $th;
         }
     }
 }
